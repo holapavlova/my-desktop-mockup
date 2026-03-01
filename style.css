@@ -1,0 +1,580 @@
+/* =========================================
+   1. VARIABLES Y CONFIGURACIÓN GLOBAL
+   ========================================= */
+:root {
+    --bg-color: #0f0f13;
+    --window-bg: rgba(247, 247, 247, 0.7);
+    --dock-bg: rgba(255, 255, 255, 0.2);
+    --color-red: #F21D44;
+    --color-blue: #007aff;
+    --color-green: #0DA64F;
+    --color-yellow: #F2D22E;
+    --color-orange: #F38A1D;
+    --color-pink: #f0b6d4;
+    --color-black: #101113;
+    --color-white: #F7F7F7;
+}
+
+* { 
+    box-sizing: border-box; 
+    user-select: none; 
+}
+
+body {
+    margin: 0; 
+    padding: 0; 
+    width: 100vw; 
+    height: 100vh; 
+    overflow: hidden;
+    background: var(--color-pink);
+    font-family: 'DM Mono', monospace;
+}
+
+/* =========================================
+   2. PANTALLA DE CARGA (BOOT SCREEN)
+   ========================================= */
+#boot-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--color-black);
+    z-index: 99999; 
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-family: 'DM Mono', monospace;
+    overflow: hidden;
+}
+
+.terminal-text {
+    color: var(--color-blue); 
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 18px;
+    background: var(--color-blue);
+    animation: blink 0.8s infinite;
+    vertical-align: text-bottom;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* =========================================
+   3. BARRA SUPERIOR (TOP BAR)
+   ========================================= */
+.top-bar {
+    width: 100%; 
+    height: 30px; 
+    background: var(--color-white); 
+    backdrop-filter: blur(10px);
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 0 20px;
+    color: var(--color-black); 
+    font-size: 15px; 
+    letter-spacing: -0.5px;
+    position: absolute; 
+    top: 0; 
+    z-index: 9000;
+}
+
+/* Menús Izquierda */
+.top-menu {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.menu-bar {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100%;
+}
+
+.menu-item {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.menu-title {
+    padding: 0 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: default;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.brand-logo {
+    height: 18px; 
+    width: auto;  
+    vertical-align: middle; 
+    pointer-events: none; 
+}
+
+.clock { 
+    font-weight: 500; 
+    font-size: 16px; 
+    margin-left: 10px; 
+    white-space: nowrap; 
+}
+
+/* Dropdowns (Desplegables) */
+.dropdown {
+    position: absolute;
+    top: 30px; 
+    left: 0;
+    width: 200px;
+    background: var(--color-white);
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    display: none; 
+    z-index: 99999; 
+    color: #333;
+}
+
+.menu-item.active .dropdown {
+    display: block;
+}
+
+.dropdown li {
+    padding: 8px 15px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.dropdown li:hover {
+    background: var(--color-blue);
+    color: white;
+}
+
+.dropdown li.disabled {
+    color: #999;
+    pointer-events: none;
+}
+
+.dropdown li.separator {
+    height: 1px;
+    background: #ddd;
+    padding: 0;
+    margin: 5px 0;
+    pointer-events: none;
+}
+
+/* Zona Derecha (Iconos y Reloj) */
+.top-right {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+    margin-left: auto;
+}
+
+.status-icon {
+    height: 18px; 
+    width: auto; 
+    margin: 0 6px; 
+    vertical-align: middle;
+    cursor: default;
+}
+
+.battery-status {
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+}
+
+/* =========================================
+   4. ESCRITORIO (DESKTOP)
+   ========================================= */
+.desktop-area {
+    width: 100%; 
+    height: 100%; 
+    padding: 50px 20px;
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px; 
+    flex-wrap: wrap; 
+    align-content: flex-start;
+}
+
+.desktop-background {
+    position: absolute;
+    padding: 100px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: -1; 
+}
+
+.desktop-icon {
+    width: 90px; 
+    padding: 10px; 
+    border-radius: 2px;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center;
+    cursor: pointer; 
+    color: white; 
+    transition: background 0.2s;
+    position: relative; 
+    touch-action: none; 
+    z-index:3;
+}
+
+.desktop-icon:hover { 
+    background: rgba(0, 122, 255, 0.2); 
+}
+
+.desktop-icon img, 
+.desktop-icon span {
+    pointer-events: none;
+}
+
+.desktop-icon img { 
+    width: 48px; 
+    height: 48px; 
+    margin-bottom: 5px; 
+}
+
+.desktop-icon span { 
+    font-size: 16px; 
+    text-shadow: 0 1px 2px black; 
+}
+
+/* =========================================
+   5. VENTANAS
+   ========================================= */
+.window {
+    position: absolute;
+    width: 60vw;  
+    height: 55vh; 
+    left: 20vw;
+    top: 15vh;
+    min-width: 400px;
+    max-width: 1000px;
+    min-height: 400px;
+    background: var(--window-bg);
+    border-radius: 2px;
+    border: solid 2px var(--color-black);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(15px);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
+    touch-action: none; 
+}
+
+.window-header {
+    height: 40px;
+    background: var(--color-white);
+    border-bottom: solid 2px var(--color-black);
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    cursor: grab; 
+    flex-shrink: 0; 
+}
+
+.window-header:active { 
+    cursor: grabbing; 
+}
+
+.window-content {
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+    color: #333;
+}
+
+/* Semáforo (Botones ventana) */
+.traffic-lights {
+    display: flex;
+    gap: 6px;
+    margin-right: 15px;
+    position: relative;
+    z-index: 50; 
+}
+
+.traffic-light {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    cursor: pointer; 
+}
+
+.close { background: var(--color-red); }
+.close:hover { background: var(--color-black); } 
+.minimize { background: var(--color-orange); }
+.maximize { background: var(--color-green); }
+
+/* Ajuste Ventanas en Móvil */
+@media (max-width: 768px) {
+    .window {
+        width: 90vw; 
+        height: 70vh; 
+        left: 5vw;  
+        top: 10vh;
+    }
+    .project-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Scrollbars Personalizados (Estilo Mac/Tu estilo) */
+.window-content::-webkit-scrollbar {
+    width: 12px;
+}
+
+.window-content::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+.window-content::-webkit-scrollbar-thumb {
+    background-color: var(--color-yellow); 
+    border-radius: 2px; 
+    border: 2px solid transparent; 
+    background-clip: content-box; 
+}
+
+.window-content::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.4); 
+}
+
+/* =========================================
+   6. CONTENIDOS INTERNOS (PROYECTOS Y FORM)
+   ========================================= */
+
+/* Grid de Proyectos */
+.project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+@media (min-width: 500px) {
+    .project-grid { 
+        grid-template-columns: 1fr 1fr; 
+    }
+}
+
+.project-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    transition: transform 0.2s;
+}
+
+.project-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.project-img {
+    width: 100%;
+    height: 100px;
+    background-color: #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+/* Formulario de Contacto */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--color-black);
+}
+
+.form-group input, 
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--color-pink);
+    border-radius: 2px;
+    font-family: 'dm mono', monospace;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+    border-color: var(--color-blue);
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: none; 
+}
+
+#submit-btn {
+    font-family: 'DM Mono', monospace;
+    width: 100%;
+    background: var(--color-blue);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#submit-btn:hover {
+    background: var(--color-orange);
+}
+
+.success-msg { color: var(--color-green); font-weight: bold; }
+.error-msg { color: var(--color-red); font-weight: bold; }
+
+/* =========================================
+   7. DOCK
+   ========================================= */
+.dock-container {
+    position: absolute; 
+    bottom: 20px; 
+    width: 100%;
+    display: flex; 
+    justify-content: center; 
+    z-index: 10000;
+}
+
+.dock {
+    background: var(--dock-bg); 
+    backdrop-filter: blur(10px);
+    padding: 10px; 
+    border-radius: 2px; 
+    display: flex; 
+    gap: 10px;
+}
+
+.dock-icon { 
+    width: 45px; 
+    height: 45px; 
+    transition: 0.2s; 
+    cursor: pointer; 
+}
+
+.dock-icon img { 
+    width: 100%; 
+    height: 100%; 
+    pointer-events: none; 
+}
+
+/* =========================================
+   8. PANTALLA NEGRA (APAGADO)
+   ========================================= */
+#black-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-black);
+    z-index: 2147483647; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* ESTADO INICIAL: OCULTO */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; 
+}
+
+.power-container { 
+    text-align: center; 
+    color: #444; 
+}
+
+#power-on-btn {
+    background: transparent; 
+    border: 2px solid #333; 
+    color: #666;
+    padding: 15px 30px; 
+    font-size: 18px; 
+    border-radius: 50px;
+    cursor: pointer; 
+    transition: 0.3s; 
+    font-family: monospace;
+    text-transform: uppercase; 
+    letter-spacing: 2px;
+    pointer-events: auto; 
+}
+
+#power-on-btn:hover {
+    border-color: var(--color-green); 
+    color: var(--color-green);
+    transform: scale(1.05);
+}
+
+/* --- FIX PARA PANTALLA COMPLETA --- */
+/* Estándar */
+:fullscreen {
+    background-color: var(--color-pink);
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Para navegadores basados en WebKit (Chrome, Safari, Edge) */
+:-webkit-full-screen {
+    background-color: var(--color-pink);
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Para el fondo que pone el navegador detrás del elemento */
+::backdrop {
+    background-color: var(--color-pink);
+}
+
+/* --- TARJETAS CON EMBED (BEHANCE) --- */
+.project-card.embed-card {
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 404 / 316; 
+    display: flex;
+    background: #000;
+}
+
+.project-card.embed-card iframe {
+    width: 100%; 
+    height: 100%;
+    
+    border: none;
+    display: block;
+}

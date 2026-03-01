@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PortfoliOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- CARGA -->
+    <div id="boot-screen">
+      <div class="terminal-text" id="terminal-content">
+        <span class="cursor">_</span>
+      </div>
+    </div>
+   <!-- BARRA SUPERIOR CON MENÚ DESPLEGABLE -->
+    <div class="top-bar">
+        <!-- ZONA IZQUIERDA: MENÚS -->
+        <nav class="top-menu">
+            <ul class="menu-bar">
+                <!-- Menú Tomate (Sistema) -->
+                <li class="menu-item">
+                    <span class="menu-title">
+                        <img src="img/tomate.svg" alt="Tomate Logo" class="brand-logo">
+                    </span>
+                    <ul class="dropdown">
+                        <li onclick="alert('PortfoliOS \nCreado por Hola·Pavlova.')">Acerca de este Portfolio</li>
+                        <li class="separator"></li>
+                        <li onclick="location.reload()">Recargar...</li>
+                        <li onclick="window.toggleSystem(true)">Apagar</li>
+                    </ul>
+                </li>
+
+                <!-- Menú Archivo -->
+                <li class="menu-item">
+                    <span class="menu-title">Archivo</span>
+                    <ul class="dropdown">
+                        <li onclick="openWindow('projects')">Abrir proyectos</li>
+                        <li onclick="openWindow('contact')">Nuevo mensaje</li>
+                        <li class="separator"></li>
+                        <li class="disabled">Descargar CV (PDF)</li>
+                    </ul>
+                </li>
+
+                <!-- Menú Ver -->
+                <li class="menu-item">
+                    <span class="menu-title">Ver</span>
+                    <ul class="dropdown">
+                        <li onclick="document.body.requestFullscreen()">Pantalla Completa</li>
+                        <li class="disabled">Mostrar Barra de Estado</li>
+                    </ul>
+                </li>
+
+                <!-- Menú Ayuda -->
+                <li class="menu-item">
+                    <span class="menu-title">Ayuda</span>
+                    <ul class="dropdown">
+                        <li onclick="openWindow('about')">Documentación</li>
+                        <li onclick="alert('¡Hola! Este es un portfolio interactivo. Puedes navegar por las ventanas usando los iconos del escritorio o los menús superiores. También arrastrar las carpetas o ventanas para ordenarlas como prefieras.')">Instrucciones</li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- ZONA DERECHA: RELOJ E ICONOS -->
+        <div class="top-right">
+            <!-- Icono CARGA (Solo imagen) -->
+            <img src="img/cargando.svg" class="status-icon" alt="WiFi">
+
+            <!-- Icono BATERÍA (Texto + Imagen) -->
+            <div class="battery-status">
+                <span style="margin-right: 5px;">80%</span>
+                <img src="img/bateria.svg" class="status-icon" alt="Batería">
+            </div>
+
+            <!-- Icono SONIDO -->
+            <img src="img/sonido.svg" class="status-icon" alt="Volumen">
+
+            <!-- Icono BLUETOOTH -->
+            <img src="img/bluetooth.svg" class="status-icon" alt="bluetooth">
+
+              <!-- RELOJ -->
+            <span id="clock" style="margin-left: 10px; font-weight: 500;">12:00</span>
+         </div>
+         
+    </div>
+
+    <!-- ESCRITORIO -->
+    <div class="desktop-area" id="desktop-area">
+        <img src="img/punal-completo.svg" class="desktop-background">
+
+        <div class="desktop-icon" data-window="about">
+            <img src="img/quien-soy.svg">
+            <span>Sobre Mí</span>
+        </div>
+
+        <div class="desktop-icon" data-window="projects">
+            <img src="img/carpeta.svg">
+            <span>Proyectos</span>
+        </div>
+
+        <div class="desktop-icon" data-window="contact">
+            <img src="img/mensaje.svg">
+            <span>Contacto</span>
+        </div>
+
+        <!-- Carpeta extra decorativa -->
+        <div class="desktop-icon">
+            <img src="img/papeleraok.svg">
+            <span>Papelera</span>
+        </div>
+
+    </div>
+
+    <!-- VENTANA 1: SOBRE MÍ -->
+    <div class="window" id="window-about">
+        <div class="window-header">
+            <div class="traffic-lights">
+                <div class="traffic-light close"></div>
+                <div class="traffic-light minimize"></div>
+                <div class="traffic-light maximize"></div>
+            </div>
+            <div class="window-title">Sobre Mí.txt</div>
+        </div>
+        <div class="window-content">
+            <div style="text-align: center;">
+                <img src="img/foto-paula.png" width="120" style="margin-top:20px;">
+                <h1>¡Hola, soy Paula!</h1>
+                <p>Directora de arte y diseñadora gráfica</p>
+            </div>
+            <p><strong>Servicios</strong></p>
+            <ul>
+                <li>Ilustración</li>
+                <li>Diseño gráfico on y off line</li>
+                <li>Branding</li>
+                <li>Dossierers de venta (para productoras audiovisuales)</li>
+                <li>Diseño en Wordpress, Ceros Studio y Webflow</li>
+            </ul>
+            <p><strong>Contacto</strong></p>
+            <p>Email: info@holapavlova.es | Teléfono: +34 691 631 037</p>
+        </div>
+    </div>
+
+    <!-- VENTANA 2: PROYECTOS (CON SCROLL) -->
+    <div class="window" id="window-projects"> 
+        <div class="window-header">
+            <div class="traffic-lights">
+                <div class="traffic-light close"></div>
+                <div class="traffic-light minimize"></div>
+                <div class="traffic-light maximize"></div>
+            </div>
+            <div class="window-title">Carpeta de Proyectos</div>
+        </div>
+        <div class="window-content">
+            <h3>Mis últimos trabajos</h3>
+            <p style="font-size: 0.9em; color: #666; margin-bottom: 20px;">Haz scroll para ver todos los proyectos.</p>
+            
+            <div class="project-grid">
+                <!-- Tarjeta 1 -->
+                    <div class="project-card embed-card">
+                        <iframe 
+                            src="https://www.behance.net/embed/project/218487513?ilo0=1" 
+                            allowfullscreen 
+                            lazyload 
+                            frameborder="0" 
+                            allow="clipboard-write" 
+                            scrolling="no"
+                            refererPolicy="strict-origin-when-cross-origin">
+                        </iframe>
+                    </div>
+                <!-- Tarjeta 2 -->
+                    <div class="project-card embed-card">
+                        <iframe 
+                            src="https://www.behance.net/embed/project/232109991?ilo0=1" 
+                            allowfullscreen 
+                            lazyload 
+                            frameborder="0" 
+                            allow="clipboard-write" 
+                            scrolling="no"
+                            refererPolicy="strict-origin-when-cross-origin">
+                        </iframe>
+                    </div>
+                <!-- Tarjeta 3 -->
+                    <div class="project-card embed-card">
+                        <iframe 
+                            src="https://www.behance.net/embed/project/217562967?ilo0=1" 
+                            allowfullscreen 
+                            lazyload 
+                            frameborder="0" 
+                            allow="clipboard-write" 
+                            scrolling="no"
+                            refererPolicy="strict-origin-when-cross-origin">
+                        </iframe>
+                    </div>
+                <!-- Tarjeta 4 -->
+                    <div class="project-card embed-card">
+                        <iframe 
+                            src="https://www.behance.net/embed/project/215188107?ilo0=1" 
+                            allowfullscreen 
+                            lazyload 
+                            frameborder="0" 
+                            allow="clipboard-write" 
+                            scrolling="no"
+                            refererPolicy="strict-origin-when-cross-origin">
+                        </iframe>
+                    </div>
+                <!-- Tarjeta 5 -->
+                    <div class="project-card embed-card">
+                        <iframe 
+                            src="https://www.behance.net/embed/project/208293241?ilo0=1" 
+                            allowfullscreen 
+                            lazyload 
+                            frameborder="0" 
+                            allow="clipboard-write" 
+                            scrolling="no"
+                            refererPolicy="strict-origin-when-cross-origin">
+                        </iframe>
+                    </div>
+                <!-- Tarjeta 6 -->
+                    <div class="project-card embed-card">
+                        <iframe 
+                            src="https://www.behance.net/embed/project/226379277?ilo0=1" 
+                            allowfullscreen 
+                            lazyload 
+                            frameborder="0" 
+                            allow="clipboard-write" 
+                            scrolling="no"
+                            refererPolicy="strict-origin-when-cross-origin">
+                        </iframe>
+                    </div>
+                <!-- Tarjeta 7 -->
+                    <div class="project-card embed-card">
+                        <iframe 
+                            src="https://www.behance.net/embed/project/207291207?ilo0=1" 
+                            allowfullscreen 
+                            lazyload 
+                            frameborder="0" 
+                            allow="clipboard-write" 
+                            scrolling="no"
+                            refererPolicy="strict-origin-when-cross-origin">
+                        </iframe>
+                    </div>
+                <!-- Tarjeta 8 -->
+                    <div class="project-card embed-card">
+                        <iframe 
+                            src="https://www.behance.net/embed/project/217536949?ilo0=1" 
+                            allowfullscreen 
+                            lazyload 
+                            frameborder="0" 
+                            allow="clipboard-write" 
+                            scrolling="no"
+                            refererPolicy="strict-origin-when-cross-origin">
+                        </iframe>
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+  <!-- VENTANA 3: CONTACTO -->
+    <div class="window" id="window-contact">
+        <div class="window-header">
+            <div class="traffic-lights">
+                <div class="traffic-light close"></div>
+                <div class="traffic-light minimize"></div>
+                <div class="traffic-light maximize"></div>
+            </div>
+            <div class="window-title">Contacto</div>
+        </div>
+        
+        <div class="window-content">
+            <form id="contact-form">
+                <div class="form-group">
+                    <label>Nombre:</label>
+                    <input type="text" name="name" required placeholder="Tu nombre">
+                </div>
+
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" name="email" required placeholder="hola@tucorreo.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Mensaje:</label>
+                    <textarea name="message" required placeholder="¡Salúdame aquí!"></textarea>
+                </div>
+
+                <button type="submit" id="submit-btn">Enviar Mensaje</button>
+                
+                <!-- Mensaje de estado (se muestra al enviar) -->
+                <p id="form-status" style="display:none; text-align: center; margin-top: 10px;"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- DOCK EXPANDIDO -->
+    <div class="dock-container">
+        <div class="dock">
+            <!-- Iconos de Ventanas -->
+            <div class="dock-icon" data-window="about" title="Sobre Mí">
+                <img src="img/quien-soy.svg">
+            </div>
+            <div class="dock-icon" data-window="projects" title="Proyectos">
+                <img src="img/carpeta.svg">
+            </div>
+            <div class="dock-icon" title="PS">
+                <img src="img/ps.svg">
+            </div>
+                <div class="dock-icon" title="AI">
+                <img src="img/ai.svg">
+            </div>
+                <div class="dock-icon" title="AE">
+                <img src="img/ae.svg">
+            </div>
+                <div class="dock-icon" title="PR">
+                <img src="img/pr.svg">
+            </div>
+                <div class="dock-icon" data-window="contact" title="Email">
+                <img src="img/mensaje.svg">
+            </div>
+
+            <!-- Separador -->
+            <div style="width: 1px; height: 40px; background: rgba(255,255,255,0.3); margin: 0 5px;"></div>
+
+            <!-- Iconos de Enlaces Externos -->
+            <div class="dock-icon" data-link="https://www.instagram.com/hola.pavlova/" title="Instagram">
+                <img src="img/ig.svg">
+            </div>
+            <div class="dock-icon" data-link="https://www.linkedin.com/in/hola-pavlova/" title="LinkedIn">
+                <img src="img/in.svg">
+            </div>
+            <div class="dock-icon" data-link="https://www.behance.net/holapavlova" title="Behance">
+                <img src="img/be.svg">
+            </div>
+        </div>
+    </div>
+
+    <!-- APAGADO -->
+    <div id="black-screen">
+        <div class="power-container">
+            <button id="power-on-btn" onclick="window.toggleSystem(false)">⏻ Encender</button>
+            <p>Sistema Apagado</p>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Draggable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="main.js"></script>
+
+</body>
+</html>
